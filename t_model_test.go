@@ -6,9 +6,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFeed(t *testing.T) {
+func TestAmount(t *testing.T) {
 	e := Exch{}
 
-	_, errExch := e.ConvertedAmount(1.00, "RON", "2021-04-13")
+	amount, errExch := e.ConvertedAmount(1, "RON", "2021-04-13")
 	require.Nil(t, errExch, "passed currency is not correct")
+	require.Equal(t, 4.9223, amount)
 }

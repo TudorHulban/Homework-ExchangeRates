@@ -9,16 +9,16 @@ import (
 func TestRateDate(t *testing.T) {
 	e := Exch{}
 
-	_, errExch := e.Rate("RON", "xxx")
+	_, errExch := e.ConvertedAmount(1.00, "RON", "xxx")
 	require.Error(t, errExch, "passed date is not correct")
 
-	_, errExch = e.Rate("RON", "2021-04-13")
+	_, errExch = e.ConvertedAmount(1.00, "RON", "2021-04-13")
 	require.Nil(t, errExch)
 }
 
 func TestRateCurrency(t *testing.T) {
 	e := Exch{}
 
-	_, errExch := e.Rate("RONI", "2021-04-13")
+	_, errExch := e.ConvertedAmount(1.00, "RONI", "2021-04-13")
 	require.Error(t, errExch, "passed currency is not correct")
 }

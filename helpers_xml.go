@@ -1,7 +1,8 @@
 package exchange
 
 import (
-	"fmt"
+	//"fmt"
+	"strconv"
 
 	"github.com/antchfx/xmlquery"
 )
@@ -13,9 +14,9 @@ func fetchData(url string) (*xmlquery.Node, error) {
 func findDayData(data *xmlquery.Node, day string) *xmlquery.Node {
 	daysData := xmlquery.Find(data, "//Cube")
 
-	for i, v := range daysData {
+	for _, v := range daysData {
 		if v.SelectAttr("time") == day {
-			fmt.Println(i, v.SelectAttr("time"))
+			//fmt.Println(v.SelectAttr("time"))
 
 			return v
 		}
@@ -27,26 +28,29 @@ func findDayData(data *xmlquery.Node, day string) *xmlquery.Node {
 func findDayRate(dayData *xmlquery.Node, currencyISO string) (float64, error) {
 	dayRates := xmlquery.Find(dayData, "//Cube")
 
-	for i, v := range dayRates {
+	for _, v := range dayRates {
 		if v.SelectAttr("currency") == currencyISO {
-			fmt.Println(i, v.SelectAttr("rate"))
+			//fmt.Println(v.SelectAttr("rate"))
 
-			return 0.00, nil
+			res, errConv := strconv.ParseFloat(v.SelectAttr("rate"), 10)
+			if errConv != nil {
+				return 0.00, nil
+			}
+
+			return res, nil
 		}
 	}
 
 	return 0.00, nil
 }
 
-func getRate(url, currencyISO string) error {
+func getRate(url, currencyISO, forDate string) (float64, error) {
 	data, err := fetchData(url)
 	if err != nil {
-		return err
+		return 0.00, err
 	}
 
-	d := "2021-04-13"
-	day := findDayData(data, d)
-	findDayRate(day, currencyISO)
+	day := findDayData(data, forDate)
 
-	return nil
+	return findDayRate(day, currencyISO)
 }
