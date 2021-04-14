@@ -8,10 +8,10 @@ TODO:
 - add proper logging including log levels, example of library I wrote:
 https://github.com/TudorHulban/log
 
-- add validation that day is not older then 90 days
+- add validation that day is not older than 90 days
 
 - add decrement for day in order to pick up the rate for when today is
-holiday and we do not have a rate
+holiday and we do not have a oficial rate
 
 - add caching. maybe we should not go at every request and fetch but keep data locally
 */
